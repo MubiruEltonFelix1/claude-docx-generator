@@ -1,0 +1,15 @@
+{
+    "name": "docx-generator",
+    "version": "1.0.0",
+    "description": "Generate statistics notes DOCX",
+    "main": "generate.js",
+    "type": "commonjs",
+    "scripts": {
+        "start": "node generate.js",
+        "generate2-docx": "node generate2_to_docx.js",
+        "paste": "node paste_here.js"
+    },
+    "dependencies": {
+        "docx": "^9.6.1"
+    }
+}
