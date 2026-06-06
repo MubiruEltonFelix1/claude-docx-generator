@@ -5,3 +5,5 @@ outputs/
 generate.js
 generate2.js
 generate2_to_docx.js
+/package-lock.json
+/package.json
