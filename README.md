@@ -6,10 +6,37 @@
 
 Turn JavaScript that builds a `docx` Document into a real `.docx` file — without editing file paths.
 
-Why this exists
+# Why this Exists:
+## Scenario: Claude Timed Out, But the DOCX Still Needs to Exist
 
-- People often copy/paste docx-generating scripts from different platforms. Those scripts write absolute paths (e.g. `/mnt/.../file.docx`) which are cumbersome to change every time.
-- This repo provides a tiny path-fixer (`runner.js`) so you can paste any `docx`-producing JS into a single file and run it. The resulting `.docx` is automatically saved into `outputs/`.
+You're working with an AI assistant to generate a 40-page report, proposal, thesis draft, or technical document.
+
+The AI successfully writes the JavaScript that builds the DOCX using the `docx` package:
+
+```js
+const { Document, Packer, Paragraph } = require("docx");
+// hundreds of lines of generated content...
+```
+
+But then one of these things happens:
+
+* The AI session times out before producing the actual `.docx` file.
+* The generated script contains an environment-specific path such as `/mnt/data/report.docx`.
+* The code came from Claude, ChatGPT, Gemini, or another platform that saved files to a location that doesn't exist on your machine.
+* You just want the document now—not another round of path fixing and debugging.
+
+Instead of editing file paths throughout the script, you paste the generated code into `paste_here.js` and run:
+
+```bash
+node paste_here.js
+```
+
+This tool automatically intercepts the DOCX file write operation and redirects the output into the local `outputs/` directory.
+
+The result: AI-generated DOCX code becomes a real `.docx` file on your computer in seconds, regardless of where the original script expected to save it.
+
+In short: **when an AI can generate the document code but cannot deliver the document itself, this repository bridges the gap.**
+
 
 Badges & quick facts
 
