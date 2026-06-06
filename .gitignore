@@ -2,3 +2,6 @@ node_modules/
 outputs/
 .DS_Store
 *.log
+generate.js
+generate2.js
+generate2_to_docx.js
