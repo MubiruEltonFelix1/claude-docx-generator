@@ -1,59 +1,83 @@
-# DOCX Generator — Paste & Produce
+<div align="center">
 
-![Platform: Node.js](https://img.shields.io/badge/Platform-Node.js-339933.svg)
-![Type: Local Tool](https://img.shields.io/badge/Type-Local%20Tool-blue.svg)
-![Outputs: outputs/](https://img.shields.io/badge/Outputs-outputs%2F--ignored-lightgrey.svg)
+![DOCX Generator — Paste & Produce](./banner.svg)
 
-Turn JavaScript that builds a `docx` Document into a real `.docx` file — without editing file paths.
+<br/>
 
-# Why this Exists:
-## Scenario: Claude Timed Out, But the DOCX Still Needs to Exist
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org)
+[![npm](https://img.shields.io/badge/npm-claude--docx--generator-CB3837?style=for-the-badge&logo=npm&logoColor=white)](https://www.npmjs.com/package/claude-docx-generator)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](./LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=for-the-badge&logo=github)](./CONTRIBUTING.md)
+[![Zero Config](https://img.shields.io/badge/config-zero--required-555?style=for-the-badge)](https://github.com/MubiruEltonFelix1/claude-docx-generator)
+[![outputs gitignored](https://img.shields.io/badge/outputs%2F-git--ignored-4CAF50?style=for-the-badge&logo=git&logoColor=white)](https://github.com/MubiruEltonFelix1/claude-docx-generator/blob/main/.gitignore)
 
-You're working with an AI assistant to generate a 40-page report, proposal, thesis draft, or technical document.
+<br/>
 
-The AI successfully writes the JavaScript that builds the DOCX using the `docx` package:
+**Turn AI-generated JavaScript into a real `.docx` file — without touching a single file path.**
 
-```js
-const { Document, Packer, Paragraph } = require("docx");
-// hundreds of lines of generated content...
-```
+[Quick Start](#-quick-start) · [How It Works](#-how-it-works) · [File Reference](#-file-reference) · [Contributing](./CONTRIBUTING.md)
 
-But then one of these things happens:
+</div>
 
-* The AI session times out before producing the actual `.docx` file.
-* The generated script contains an environment-specific path such as `/mnt/data/report.docx`.
-* The code came from Claude, ChatGPT, Gemini, or another platform that saved files to a location that doesn't exist on your machine.
-* You just want the document now—not another round of path fixing and debugging.
+---
 
-Instead of editing file paths throughout the script, you paste the generated code into `paste_here.js` and run:
+## 🧩 The Problem
+
+You're deep in a session with Claude, ChatGPT, Gemini — or any AI assistant. You've asked it to generate a 40-page report, a proposal, or a thesis draft. It writes the whole thing as a JavaScript script using the [`docx`](https://www.npmjs.com/package/docx) package.
+
+Then one of these things happens:
+
+| Scenario | What goes wrong |
+|---|---|
+| ⏳ **Session timeout** | The AI wrote the code, but never produced the actual file |
+| 🗂️ **Hardcoded paths** | Script writes to `/mnt/data/report.docx` — which doesn't exist on your machine |
+| 🤖 **Platform differences** | Code came from ChatGPT or Claude artifacts — paths and environments don't match yours |
+| 😩 **Debugging fatigue** | You just want the document now, not another round of path-fixing |
+
+The AI can generate the *code*. This tool generates the *file*.
+
+---
+
+## ✨ The Solution
+
+Paste the AI-generated code into `paste_here.js` and run one command:
 
 ```bash
 node paste_here.js
 ```
 
-This tool automatically intercepts the DOCX file write operation and redirects the output into the local `outputs/` directory.
+`runner.js` **monkey-patches `fs.writeFileSync` and `fs.writeFile`** at runtime — silently intercepting any Buffer write (which is exactly how `docx` saves files) and redirecting the output to your local `outputs/` folder.
 
-The result: AI-generated DOCX code becomes a real `.docx` file on your computer in seconds, regardless of where the original script expected to save it.
+No path editing. No environment setup. No debugging.
 
-In short: **when an AI can generate the document code but cannot deliver the document itself, this repository bridges the gap.**
+```
+AI generates code  →  paste into paste_here.js  →  node paste_here.js  →  ✅ outputs/your-doc.docx
+```
 
+---
 
-Badges & quick facts
+## 🚀 Quick Start
 
-- **No publish required:** this is a local tool — run with Node.js.
-- **Safe outputs:** `outputs/` is in `.gitignore` so generated DOCX files won't be committed accidentally.
-
-Quick start
-
-1. Install dependencies:
+**1. Install**
 
 ```bash
 npm install claude-docx-generator
 ```
 
-2. Paste your docx-generating code into [paste_here.js](paste_here.js). `paste_here.js` already `require`s [runner.js](runner.js) which redirects Buffer writes into `outputs/`.
+**2. Paste your code**
 
-3. Run:
+Open [`paste_here.js`](./paste_here.js) and paste in the AI-generated JavaScript. The file already `require`s `runner.js` at the top — that's the magic line, leave it alone.
+
+```js
+// paste_here.js — this line is already there, do not remove it
+require('./runner.js');
+
+// ↓ paste your AI-generated docx code below ↓
+const { Document, Packer, Paragraph } = require("docx");
+// ... hundreds of lines of generated content
+```
+
+**3. Run**
 
 ```bash
 node paste_here.js
@@ -61,41 +85,80 @@ node paste_here.js
 npm run paste
 ```
 
-File references
+Your `.docx` file appears in `outputs/` — no matter where the original script thought it was going.
 
-- [paste_here.js](paste_here.js) — development template where you paste code.
-- [runner.js](runner.js) — intercepts `fs.writeFileSync`/`fs.writeFile` Buffer writes and redirects them into `outputs/`.
-- [generate2.js](generate2.js) and [generate2_to_docx.js](generate2_to_docx.js) — example generators present in the repo.
+---
 
-How it works (brief)
+## ⚙️ How It Works
 
-- Many `docx` scripts follow the pattern:
+Most AI-generated `docx` scripts follow this pattern:
 
 ```js
-Packer.toBuffer(doc).then(buffer => fs.writeFileSync('/some/absolute/path/my.docx', buffer));
+Packer.toBuffer(doc).then(buffer =>
+  fs.writeFileSync('/some/absolute/path/report.docx', buffer)
+);
 ```
 
-- `runner.js` monkey-patches `fs.writeFileSync` and `fs.writeFile` at runtime. When the patched functions detect a Buffer (the `docx` payload), they replace the destination path with `outputs/<basename>` so you don't have to edit the original code.
+`runner.js` patches `fs.writeFileSync` and `fs.writeFile` before your script runs. When those functions are called with a **Buffer** (the `docx` payload), the destination path is silently replaced:
 
-Best practices
+```
+/mnt/data/report.docx              →  outputs/report.docx
+/Users/someone/Desktop/thesis.docx →  outputs/thesis.docx
+C:\Users\whatever\doc.docx         →  outputs/doc.docx
+```
 
-- Keep `outputs/` small — it contains generated binary files and is git-ignored.
-- If your pasted script writes streams, custom promises, or uses other FS APIs, open an issue or ask me to extend `runner.js` to catch that pattern.
+The filename is preserved. The location is always `outputs/`.
 
-Examples
+---
 
-- To test quickly, run the included example:
+## 📁 File Reference
+
+| File | Purpose |
+|---|---|
+| [`paste_here.js`](./paste_here.js) | **Your workspace.** Paste AI-generated code here and run it. |
+| [`runner.js`](./runner.js) | **The engine.** Patches `fs` write methods to redirect Buffer outputs into `outputs/`. |
+| [`generate2.js`](./generate2.js) | Example generator — run it to test the setup. |
+| [`generate2_to_docx.js`](./generate2_to_docx.js) | Another example demonstrating the full pipeline. |
+| `outputs/` | **Where your files land.** Git-ignored — generated docs stay off your commit history. |
+
+---
+
+## 🧪 Try It
+
+Not sure it works? Run the included example:
 
 ```bash
 node generate2.js
 ```
 
-- The example will write `MIT_Masterclass_Geometry_of_Meaning.docx` into `outputs/`.
+This writes `MIT_Masterclass_Geometry_of_Meaning.docx` into `outputs/`. Open it and see a fully generated Word document — no cloud dependency, no AI session required.
 
-Contributing
+---
 
-- This is a tiny local tool. If you want features such as a CLI argument for destination, stream interception, or previewing generated docx, tell me which feature and I will add it.
+## 💡 Best Practices
 
-License
+- **Keep `outputs/` lean.** It holds binary files. Git ignores it by design — don't fight that.
+- **Leave the `require('./runner.js')` line at the top of `paste_here.js`.** That's the whole trick.
+- **Using streams or custom Promise chains?** The current patch covers the most common `docx` patterns. If your script uses something unusual, [open an issue](https://github.com/MubiruEltonFelix1/claude-docx-generator/issues) and `runner.js` will be extended to handle it.
 
-- No license specified. Add a `LICENSE` file if you want to open-source this project.
+---
+
+## 🤝 Contributing
+
+Contributions are welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md) for the full guide.
+
+The short version: fork, branch, change, and open a PR. If you'd like a feature — CLI argument for destination, stream interception, or DOCX preview — file an issue describing it first.
+
+---
+
+## 📜 License
+
+[MIT](./LICENSE) © 2024 Mubiru Elton Felix
+
+---
+
+<div align="center">
+
+Built for the moment when the AI wrote the whole document — but the session ended before it saved the file.
+
+</div>
