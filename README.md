@@ -48,7 +48,7 @@ Quick start
 1. Install dependencies:
 
 ```bash
-npm install
+npm install claude-docx-generator
 ```
 
 2. Paste your docx-generating code into [paste_here.js](paste_here.js). `paste_here.js` already `require`s [runner.js](runner.js) which redirects Buffer writes into `outputs/`.
