@@ -11,5 +11,4 @@ require('./runner');
 
 // Paste your code starting on the next line:
 
-
 // ------------------------ END PASTE ------------------------

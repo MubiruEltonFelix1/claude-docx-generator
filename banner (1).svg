@@ -1,0 +1,37 @@
+<svg width="100%" viewBox="0 0 680 200" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>DOCX Generator — Paste &amp; Produce</title>
+<desc>Dark banner with geometric document shapes and the project title</desc>
+<defs>
+  <clipPath id="clip">
+    <rect width="680" height="200" rx="12"/>
+  </clipPath>
+</defs>
+<g clip-path="url(#clip)">
+  <rect width="680" height="200" fill="#0d1117"/>
+  <polygon points="0,200 120,0 0,0" fill="#161b22"/>
+  <polygon points="680,0 560,200 680,200" fill="#161b22"/>
+  <rect x="52" y="38" width="44" height="56" rx="4" fill="none" stroke="#30363d" stroke-width="1.5"/>
+  <polygon points="82,38 96,52 96,38" fill="#21262d"/>
+  <polyline points="82,38 82,52 96,52" fill="none" stroke="#30363d" stroke-width="1.5"/>
+  <line x1="60" y1="62" x2="88" y2="62" stroke="#30363d" stroke-width="1.2"/>
+  <line x1="60" y1="70" x2="88" y2="70" stroke="#30363d" stroke-width="1.2"/>
+  <line x1="60" y1="78" x2="78" y2="78" stroke="#30363d" stroke-width="1.2"/>
+  <rect x="590" y="110" width="44" height="56" rx="4" fill="none" stroke="#30363d" stroke-width="1.5"/>
+  <polygon points="620,110 634,124 634,110" fill="#21262d"/>
+  <polyline points="620,110 620,124 634,124" fill="none" stroke="#30363d" stroke-width="1.5"/>
+  <line x1="598" y1="134" x2="626" y2="134" stroke="#30363d" stroke-width="1.2"/>
+  <line x1="598" y1="142" x2="626" y2="142" stroke="#30363d" stroke-width="1.2"/>
+  <line x1="598" y1="150" x2="618" y2="150" stroke="#30363d" stroke-width="1.2"/>
+  <circle cx="580" cy="50" r="18" fill="none" stroke="#21262d" stroke-width="1"/>
+  <circle cx="580" cy="50" r="9" fill="none" stroke="#30363d" stroke-width="1"/>
+  <circle cx="100" cy="155" r="22" fill="none" stroke="#21262d" stroke-width="1"/>
+  <circle cx="100" cy="155" r="11" fill="none" stroke="#30363d" stroke-width="1"/>
+  <text x="340" y="95" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="13" fill="#58a6ff" letter-spacing="3">DOCX GENERATOR</text>
+  <text x="340" y="130" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="30" font-weight="600" fill="#f0f6fc" letter-spacing="-0.5">Paste &amp; Produce</text>
+  <text x="340" y="162" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="13" fill="#8b949e">Turn AI-generated JavaScript into a real .docx file</text>
+  <line x1="240" y1="108" x2="310" y2="108" stroke="#21262d" stroke-width="1"/>
+  <line x1="370" y1="108" x2="440" y2="108" stroke="#21262d" stroke-width="1"/>
+  <rect x="313" y="102" width="54" height="12" rx="2" fill="#21262d"/>
+  <text x="340" y="112" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9" fill="#58a6ff">node.js</text>
+</g>
+</svg>

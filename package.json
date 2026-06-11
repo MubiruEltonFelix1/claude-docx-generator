@@ -1,13 +1,34 @@
 {
-    "name": "docx-generator",
+    "name": "claude-docx-generator",
     "version": "1.0.0",
-    "description": "Generate statistics notes DOCX",
-    "main": "generate.js",
+    "description": "Turn JavaScript that builds a docx Document into a real .docx file — without editing file paths. Paste AI-generated docx code and run.",
+    "main": "index.js",
+    "bin": {
+        "claude-docx-gen": "./cli.js"
+    },
+    "files": [
+        "index.js",
+        "cli.js",
+        "runner.js",
+        "paste_here.js"
+    ],
     "type": "commonjs",
     "scripts": {
-        "start": "node generate.js",
-        "generate2-docx": "node generate2_to_docx.js",
         "paste": "node paste_here.js"
+    },
+    "keywords": [
+        "docx",
+        "document",
+        "generator",
+        "office",
+        "word",
+        "cli"
+    ],
+    "author": "",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": ""
     },
     "dependencies": {
         "docx": "^9.6.1"
